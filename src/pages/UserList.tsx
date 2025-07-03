@@ -1,9 +1,10 @@
 import { Table, Button } from "antd"
 import type { ColumnsType } from "antd/es/table"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { setSelectedUsers } from "../store/userSlice"
 import { useNavigate } from "react-router-dom"
+import type { RootState } from "../store"
 
 interface User {
   id: number
@@ -11,21 +12,12 @@ interface User {
   email: string
 }
 
-const data: User[] = [
-  { id: 1, name: "Jack", email: "jack@gmail.com" },
-  { id: 2, name: "Jane", email: "jane@gmail.com" },
-  { id: 3, name: "Tom", email: "tom@gmail.com" },
-  { id: 4, name: "Coll", email: "coll@gmail.com" },
-  { id: 5, name: "Alex", email: "alex@gmail.com" },
-  { id: 6, name: "Anna", email: "anna@gmail.com" },
-  { id: 7, name: "Cruse", email: "cruse@gmail.com" },
-  { id: 8, name: "Bob", email: "bob@gmail.com" }
-]
-
 export default function UserList() {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const data = useSelector((state: RootState) => state.user.allUsers)
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys)
@@ -44,15 +36,19 @@ export default function UserList() {
   ]
 
   return (
-    <div style={{padding:2, backgroundColor:"lightgrey", minHeight:"97vh"}}>
+    <div style={{ padding: 20, backgroundColor: "lightgrey", minHeight: "97vh" }}>
       <Table
         rowSelection={{ selectedRowKeys, onChange: onSelectChange }}
         rowKey="id"
         columns={columns}
         dataSource={data}
-        style={{ backgroundColor: "lightgrey", borderRadius: 8 }}
+        style={{ backgroundColor: "white", borderRadius: 8 }}
       />
-      <Button style={{backgroundColor:"lightgreen", font:"bold"}} onClick={handleNext} disabled={selectedRowKeys.length === 0}>
+      <Button
+        style={{ backgroundColor: "lightgreen", fontWeight: "bold", marginTop: 10 }}
+        onClick={handleNext}
+        disabled={selectedRowKeys.length === 0}
+      >
         Next Page
       </Button>
     </div>

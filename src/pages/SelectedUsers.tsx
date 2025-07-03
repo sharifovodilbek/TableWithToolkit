@@ -17,7 +17,7 @@ export default function SelectedUsers() {
     { title: "Email", dataIndex: "email", key: "email" },
     {
       title: "Action",
-      render: (text: any, record: any) => (
+      render: (_: any, record: any) => (
         <Button type="primary" danger onClick={() => handleDelete(record.id)}>
           Delete
         </Button>
